@@ -1,6 +1,5 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
-
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
