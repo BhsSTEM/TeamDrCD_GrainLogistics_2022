@@ -1,48 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:onClick="login"
-    android:orientation="vertical"
-    android:pointerIcon="arrow">
-
-    <Button
-        android:id="@+id/overview2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="contact"
-        android:textColor="#757575"
-        map:layout_constraintStart_toEndOf="@+id/Overview"
-        map:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/overview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="menu"
-        android:textColor="#757575"
-        map:layout_constraintEnd_toStartOf="@+id/Overview"
-        map:layout_constraintTop_toTopOf="parent" />
-
-
-    <Button
-        android:id="@+id/Overview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/overview"
-        android:textColor="#757575"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toTopOf="parent" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
@@ -78,6 +35,5 @@
 
 
 </RelativeLayout>
-
 
 
