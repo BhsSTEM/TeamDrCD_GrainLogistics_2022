@@ -6,9 +6,6 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="email">Email</string>
     <string name="title_activity_maps">MapsActivity</string>
-
-    <string name="overview">Overview</string>
-
     <string name="feedback">Feedback</string>
     <string name="todo">TODO</string>
     <string name="dash">-</string>
