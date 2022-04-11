@@ -7,9 +7,8 @@
     tools:context=".NewUser">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_height="729dp"
         android:orientation="vertical"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="1dp"
@@ -17,77 +16,55 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="1dp" />
+            android:layout_height="30sp" />
 
-        <TextView
-            android:id="@+id/textView3"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="First Name:"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal">
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="1dp" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="20" />
 
-        <EditText
-            android:id="@+id/editTextTextPersonName4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="John"
-            android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/editTextTextPersonName4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="First Name"
+                android:inputType="textPersonName" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Last Name:"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="20" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/editTextTextPersonName5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Last Name"
+                android:inputType="textPersonName" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <EditText
-            android:id="@+id/editTextTextPersonName5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Deere"
-            android:inputType="textPersonName" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Email Address:"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="20
+" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/editTextTextPersonName2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="example@gmail.com"
+            android:hint="Email"
             android:inputType="textEmailAddress" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password:"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/editTextTextPersonName6"
@@ -97,29 +74,13 @@
             android:hint="Password"
             android:inputType="textPassword" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Comfirm Password:"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <EditText
             android:id="@+id/editTextTextPersonName8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Password"
+            android:hint="Confirm Password"
             android:inputType="textPassword" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Phone Number:"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <Space
             android:layout_width="match_parent"
@@ -130,37 +91,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="123456789"
+            android:hint="Phone Number"
             android:inputType="phone" />
 
-        <TextView
-            android:id="@+id/textView10"
+        <Button
+            android:id="@+id/button3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#F44336"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Join an exsisting farm"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Create a new farm"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="submit"
+            android:text="Submit"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/button5"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:backgroundTint="#367C2B"
-        android:fontFamily="sans-serif"
-        android:onClick="submit"
-        android:text="Submit"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:iconTint="#367C2B"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -107,7 +107,6 @@
         android:layout_marginTop="100dp"
         android:text=""
         android:textAlignment="center"
-        android:textColor="#F44336"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
