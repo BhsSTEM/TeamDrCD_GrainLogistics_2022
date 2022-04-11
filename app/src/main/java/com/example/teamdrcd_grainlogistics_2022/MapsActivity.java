@@ -1,5 +1,14 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+
 import static java.lang.Thread.sleep;
 
 import androidx.annotation.NonNull;
@@ -17,7 +26,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationRequest;
+
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -55,7 +67,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+                new String[] {"Test Button", "Second Button"}));
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
 
 
     }
@@ -77,6 +94,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng quadcities = new LatLng(42, -90);
         mMap.addMarker(new MarkerOptions().position(quadcities).title("Marker in Bettendorf"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(quadcities));
+
+
+        // Add a marker in Sydney and move the camera
+        LatLng Tractor1 = new LatLng(41.557579, -90.495911);
+        mMap.addMarker(new MarkerOptions().position(Tractor1).title("Tractor #1")
+                // below line is use to add custom marker on our map.
+                .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(Tractor1));
+    }
+
 
         LatLng Tractor1 = new LatLng(41.557579, -90.495911);
         //mMap.addMarker(new MarkerOptions().position(Tractor1).title("Tractor #1")
@@ -203,12 +230,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
         // below line is use to generate a drawable.
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
 
         // below line is use to set bounds to our vector drawable.
+
+        vectorDrawable.setBounds(20, 20, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+
 
         // below line is use to create a bitmap for our
         // drawable which we have added.
