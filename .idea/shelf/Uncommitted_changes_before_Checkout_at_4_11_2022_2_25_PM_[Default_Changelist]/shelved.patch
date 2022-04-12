@@ -1,0 +1,229 @@
+Index: app/src/main/java/com/example/teamdrcd_grainlogistics_2022/NewUser.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.teamdrcd_grainlogistics_2022;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.EditText;\r\n\r\nimport android.util.Log;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.*;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\n\r\nimport java.util.Locale;\r\n\r\n\r\npublic class NewUser extends AppCompatActivity {\r\n    private EditText firstName;\r\n    private EditText emailBox;\r\n    private EditText passwordBox1;\r\n    private EditText passwordBox2;\r\n    private EditText lastName;\r\n    private EditText phoneNum;\r\n\r\n    FirebaseDatabase database = FirebaseDatabase.getInstance();\r\n    private FirebaseAuth mAuth = FirebaseAuth.getInstance();\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_new_user);\r\n        //mAuth = FirebaseAuth.getInstance();\r\n    }\r\n\r\n    @Override\r\n    public void onStart() {\r\n        super.onStart();\r\n        // Check if user is signed in (non-null) and update UI accordingly.\r\n        FirebaseUser currentUser = mAuth.getCurrentUser();\r\n        if(currentUser != null){\r\n            currentUser.reload();\r\n        }\r\n    }\r\n\r\n    public void submit(View view) {\r\n\r\n\r\n\r\n        emailBox = findViewById(R.id.editTextTextPersonName2);\r\n        String email = emailBox.getText().toString();\r\n\r\n        passwordBox1 = findViewById(R.id.editTextTextPersonName6);\r\n        String password1 = passwordBox1.getText().toString();\r\n\r\n        passwordBox2 = findViewById(R.id.editTextTextPersonName8);\r\n        String password2 = passwordBox1.getText().toString();\r\n\r\n        String password = \"\";\r\n        if(password1.equals(password2))\r\n        {\r\n            password = password1;\r\n        }\r\n\r\n        mAuth.createUserWithEmailAndPassword(email, password)\r\n                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {\r\n                    @Override\r\n                    public void onComplete(@NonNull Task<AuthResult> task) {\r\n                        if (task.isSuccessful()) {\r\n                            // Sign in success, update UI with the signed-in user's information\r\n                            //Log.d(TAG, \"createUserWithEmail:success\");\r\n                            FirebaseUser user = mAuth.getCurrentUser();\r\n                            updateUI(user);\r\n                            assert user != null;\r\n                            String uid = user.getUid();\r\n\r\n                            firstName = findViewById(R.id.editTextTextPersonName4);\r\n                            String fName = firstName.getText().toString();\r\n                            fName = fName.toLowerCase();\r\n                            String finitial = fName.substring(0,1);\r\n                            fName = finitial.toUpperCase() + fName.substring(1);\r\n                            DatabaseReference myRef = database.getReference(\"/users/\" + uid + \"/First Name\");\r\n                            myRef.setValue(fName);\r\n\r\n                            lastName = findViewById(R.id.editTextTextPersonName5);\r\n                            String lName = lastName.getText().toString();\r\n                            lName = lName.toLowerCase();\r\n                            String linitial = lName.substring(0,1);\r\n                            lName = linitial.toUpperCase() + lName.substring(1);\r\n                            DatabaseReference myRef1 = database.getReference(\"/users/\" + uid + \"/Last Name\");\r\n                            myRef1.setValue(lName);\r\n\r\n                            phoneNum = findViewById(R.id.editTextTextPersonName7);\r\n                            Long pn = 0L;\r\n\r\n                            try {\r\n                                pn = Long.parseLong(phoneNum.getText().toString());\r\n                            }\r\n                            catch (Exception e)\r\n                            {\r\n                                String sPhoneNum = phoneNum.getText().toString();\r\n                                sPhoneNum.replace(\"-\", \"\");\r\n                                sPhoneNum.replace(\"(\", \"\");\r\n                                sPhoneNum.replace(\")\", \"\");\r\n                                sPhoneNum.replace(\" \", \"\");\r\n                                pn = Long.parseLong((sPhoneNum));\r\n                            }\r\n\r\n                            DatabaseReference myRef2 = database.getReference(\"/users/\" + uid + \"/Phone Number\");\r\n                            myRef2.setValue(pn);\r\n                        } else {\r\n                            // If sign in fails, display a message to the user.\r\n                            //Log.w(TAG, \"createUserWithEmail:failure\", task.getException());\r\n                            //Toast.makeText(EmailPasswordActivity.this, \"Authentication failed.\",\r\n                                    //Toast.LENGTH_SHORT).show();\r\n                            // If sign in fails, display a message to the user.\r\n                            //Toast.makeText(EmailPasswordActivity.this, \"Authentication failed.\",\r\n                            //Toast.LENGTH_SHORT).show();\r\n                            //updateUI(null);\r\n                            String exception = task.getException().toString();\r\n                            for(int i = 0; i < exception.length(); i++)\r\n                            {\r\n                                if(exception.charAt(i) == ':')\r\n                                {\r\n                                    exception = exception.substring(i + 2);\r\n                                }\r\n                            }\r\n\r\n                            String suc = \"Account Activation Failed: \\n\" + exception;\r\n                            final TextView helloTextView = (TextView) findViewById(R.id.textView10);\r\n                            helloTextView.setText(suc);\r\n\r\n                        }\r\n                    }\r\n                });\r\n\r\n        mAuth.signInWithEmailAndPassword(email, password)\r\n                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {\r\n                            @Override\r\n                            public void onComplete(@NonNull Task<AuthResult> task) {\r\n                                if (task.isSuccessful()) {\r\n                                    // Sign in success, update UI with the signed-in user's information\r\n                                    FirebaseUser user = mAuth.getCurrentUser();\r\n                                    updateUI(user);\r\n                                }\r\n                                else {\r\n                                    // If sign in fails, display a message to the user.\r\n                                    //Toast.makeText(EmailPasswordActivity.this, \"Authentication failed.\",\r\n                                    //Toast.LENGTH_SHORT).show();\r\n                                    //updateUI(null);\r\n                                    String suc = \"Login Failed. Your email or password was incorrect.\";\r\n                                    //final TextView helloTextView = (TextView) findViewById(R.id.textView);\r\n                                    //helloTextView.setText(suc);\r\n                                }\r\n                            }\r\n                        }\r\n                );\r\n    }\r\n\r\n    private void updateUI(FirebaseUser user) {\r\n        startActivity(new Intent(NewUser.this, MapsActivity.class));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/teamdrcd_grainlogistics_2022/NewUser.java b/app/src/main/java/com/example/teamdrcd_grainlogistics_2022/NewUser.java
+--- a/app/src/main/java/com/example/teamdrcd_grainlogistics_2022/NewUser.java	
++++ b/app/src/main/java/com/example/teamdrcd_grainlogistics_2022/NewUser.java	
+@@ -28,6 +28,7 @@
+     private EditText passwordBox2;
+     private EditText lastName;
+     private EditText phoneNum;
++    private boolean success = true;
+ 
+     FirebaseDatabase database = FirebaseDatabase.getInstance();
+     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+@@ -72,94 +73,100 @@
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         if (task.isSuccessful()) {
+-                            // Sign in success, update UI with the signed-in user's information
+-                            //Log.d(TAG, "createUserWithEmail:success");
+-                            FirebaseUser user = mAuth.getCurrentUser();
+-                            updateUI(user);
+-                            assert user != null;
+-                            String uid = user.getUid();
++                            success = true;
++                        }
++                        else {
++                            // If sign in fails, display a message to the user.
++                            //Log.w(TAG, "createUserWithEmail:failure", task.getException());
++                            //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
++                                    //Toast.LENGTH_SHORT).show();
++                            // If sign in fails, display a message to the user.
++                            //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
++                            //Toast.LENGTH_SHORT).show();
++                            //updateUI(null);
++                            success = false;
++                            String exception = task.getException().toString();
++                            for(int i = 0; i < exception.length(); i++)
++                            {
++                                if(exception.charAt(i) == ':')
++                                {
++                                    exception = exception.substring(i + 2);
++                                }
++                            }
++
++                            String suc = "Account Activation Failed: \n" + exception;
++                            final TextView helloTextView = (TextView) findViewById(R.id.textView10);
++                            helloTextView.setText(suc);
++
++                        }
++                    }
++                });
++
++        if (success) {
++            // Sign in success, update UI with the signed-in user's information
++            //Log.d(TAG, "createUserWithEmail:success");
++            FirebaseUser user = mAuth.getCurrentUser();
++
++            assert user != null;
++            String uid = user.getUid();
+ 
+-                            firstName = findViewById(R.id.editTextTextPersonName4);
+-                            String fName = firstName.getText().toString();
+-                            fName = fName.toLowerCase();
+-                            String finitial = fName.substring(0,1);
+-                            fName = finitial.toUpperCase() + fName.substring(1);
+-                            DatabaseReference myRef = database.getReference("/users/" + uid + "/First Name");
+-                            myRef.setValue(fName);
++            firstName = findViewById(R.id.editTextTextPersonName4);
++            String fName = firstName.getText().toString();
++            fName = fName.toLowerCase();
++            String finitial = fName.substring(0,1);
++            fName = finitial.toUpperCase() + fName.substring(1);
++            DatabaseReference myRef = database.getReference("/users/" + uid + "/First Name");
++            myRef.setValue(fName);
+ 
+-                            lastName = findViewById(R.id.editTextTextPersonName5);
+-                            String lName = lastName.getText().toString();
+-                            lName = lName.toLowerCase();
+-                            String linitial = lName.substring(0,1);
+-                            lName = linitial.toUpperCase() + lName.substring(1);
+-                            DatabaseReference myRef1 = database.getReference("/users/" + uid + "/Last Name");
+-                            myRef1.setValue(lName);
++            lastName = findViewById(R.id.editTextTextPersonName5);
++            String lName = lastName.getText().toString();
++            lName = lName.toLowerCase();
++            String linitial = lName.substring(0,1);
++            lName = linitial.toUpperCase() + lName.substring(1);
++            DatabaseReference myRef1 = database.getReference("/users/" + uid + "/Last Name");
++            myRef1.setValue(lName);
+ 
+-                            phoneNum = findViewById(R.id.editTextTextPersonName7);
+-                            Long pn = 0L;
++            phoneNum = findViewById(R.id.editTextTextPersonName7);
++            Long pn = 0L;
+ 
+-                            try {
+-                                pn = Long.parseLong(phoneNum.getText().toString());
+-                            }
+-                            catch (Exception e)
+-                            {
+-                                String sPhoneNum = phoneNum.getText().toString();
+-                                sPhoneNum.replace("-", "");
+-                                sPhoneNum.replace("(", "");
+-                                sPhoneNum.replace(")", "");
+-                                sPhoneNum.replace(" ", "");
+-                                pn = Long.parseLong((sPhoneNum));
+-                            }
++            try {
++                pn = Long.parseLong(phoneNum.getText().toString());
++            }
++            catch (Exception e)
++            {
++                String sPhoneNum = phoneNum.getText().toString();
++                sPhoneNum.replace("-", "");
++                sPhoneNum.replace("(", "");
++                sPhoneNum.replace(")", "");
++                sPhoneNum.replace(" ", "");
++                pn = Long.parseLong((sPhoneNum));
++            }
+ 
+-                            DatabaseReference myRef2 = database.getReference("/users/" + uid + "/Phone Number");
+-                            myRef2.setValue(pn);
+-                        } else {
+-                            // If sign in fails, display a message to the user.
+-                            //Log.w(TAG, "createUserWithEmail:failure", task.getException());
+-                            //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+-                                    //Toast.LENGTH_SHORT).show();
+-                            // If sign in fails, display a message to the user.
+-                            //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+-                            //Toast.LENGTH_SHORT).show();
+-                            //updateUI(null);
+-                            String exception = task.getException().toString();
+-                            for(int i = 0; i < exception.length(); i++)
+-                            {
+-                                if(exception.charAt(i) == ':')
+-                                {
+-                                    exception = exception.substring(i + 2);
+-                                }
+-                            }
+-
+-                            String suc = "Account Activation Failed: \n" + exception;
+-                            final TextView helloTextView = (TextView) findViewById(R.id.textView10);
+-                            helloTextView.setText(suc);
+-
+-                        }
+-                    }
+-                });
++            DatabaseReference myRef2 = database.getReference("/users/" + uid + "/Phone Number");
++            myRef2.setValue(pn);
++            updateUI(user);
+ 
+-        mAuth.signInWithEmailAndPassword(email, password)
+-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+-                            @Override
+-                            public void onComplete(@NonNull Task<AuthResult> task) {
+-                                if (task.isSuccessful()) {
+-                                    // Sign in success, update UI with the signed-in user's information
+-                                    FirebaseUser user = mAuth.getCurrentUser();
+-                                    updateUI(user);
+-                                }
+-                                else {
+-                                    // If sign in fails, display a message to the user.
+-                                    //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+-                                    //Toast.LENGTH_SHORT).show();
+-                                    //updateUI(null);
+-                                    String suc = "Login Failed. Your email or password was incorrect.";
+-                                    //final TextView helloTextView = (TextView) findViewById(R.id.textView);
+-                                    //helloTextView.setText(suc);
+-                                }
+-                            }
+-                        }
+-                );
++            mAuth.signInWithEmailAndPassword(email, password)
++                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
++                                @Override
++                                public void onComplete(@NonNull Task<AuthResult> task) {
++                                    if (task.isSuccessful()) {
++                                        // Sign in success, update UI with the signed-in user's information
++                                        FirebaseUser user = mAuth.getCurrentUser();
++                                        updateUI(user);
++                                    } else {
++                                        // If sign in fails, display a message to the user.
++                                        //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
++                                        //Toast.LENGTH_SHORT).show();
++                                        //updateUI(null);
++                                        String suc = "Login Failed. Your email or password was incorrect.";
++                                        //final TextView helloTextView = (TextView) findViewById(R.id.textView);
++                                        //helloTextView.setText(suc);
++                                    }
++                                }
++                            }
++                    );
++        }
+     }
+ 
+     private void updateUI(FirebaseUser user) {
+Index: app/src/main/java/com/example/teamdrcd_grainlogistics_2022/MapsActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.teamdrcd_grainlogistics_2022;\r\n\r\nimport static java.lang.Thread.sleep;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.core.app.ActivityCompat;\r\nimport androidx.core.content.ContextCompat;\r\nimport androidx.fragment.app.FragmentActivity;\r\n\r\nimport android.Manifest;\r\nimport android.content.Context;\r\nimport android.content.pm.PackageManager;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.Canvas;\r\nimport android.graphics.drawable.Drawable;\r\nimport android.location.Location;\r\nimport android.location.LocationListener;\r\nimport android.location.LocationManager;\r\nimport android.location.LocationRequest;\r\nimport android.os.Bundle;\r\n\r\nimport com.google.android.gms.location.FusedLocationProviderClient;\r\nimport com.google.android.gms.location.LocationServices;\r\nimport com.google.android.gms.maps.CameraUpdateFactory;\r\nimport com.google.android.gms.maps.GoogleMap;\r\nimport com.google.android.gms.maps.OnMapReadyCallback;\r\nimport com.google.android.gms.maps.SupportMapFragment;\r\nimport com.google.android.gms.maps.model.BitmapDescriptor;\r\nimport com.google.android.gms.maps.model.BitmapDescriptorFactory;\r\nimport com.google.android.gms.maps.model.LatLng;\r\nimport com.google.android.gms.maps.model.MarkerOptions;\r\nimport com.example.teamdrcd_grainlogistics_2022.databinding.ActivityMapsBinding;\r\nimport com.google.android.gms.tasks.CancellationToken;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.OnTokenCanceledListener;\r\n\r\n@SuppressWarnings(\"deprecation\")\r\npublic class MapsActivity extends FragmentActivity implements OnMapReadyCallback {\r\n\r\n    private FusedLocationProviderClient fusedLocationClient;\r\n    private GoogleMap mMap;\r\n    private ActivityMapsBinding binding;\r\n    //private sLocationRequest lr = new LocationRequest();\r\n    //lr.setPriority(100);\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n\r\n        binding = ActivityMapsBinding.inflate(getLayoutInflater());\r\n        setContentView(binding.getRoot());\r\n\r\n        // Obtain the SupportMapFragment and get notified when the map is ready to be used.\r\n        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()\r\n                .findFragmentById(R.id.map);\r\n        mapFragment.getMapAsync(this);\r\n\r\n        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);\r\n\r\n\r\n    }\r\n\r\n    /**\r\n     * Manipulates the map once available.\r\n     * This callback is triggered when the map is ready to be used.\r\n     * This is where we can add markers or lines, add listeners or move the camera. In this case,\r\n     * we just add a marker near Sydney, Australia.\r\n     * If Google Play services is not installed on the device, the user will be prompted to install\r\n     * it inside the SupportMapFragment. This method will only be triggered once the user has\r\n     * installed Google Play services and returned to the app.\r\n     */\r\n    @Override\r\n    public void onMapReady(@NonNull GoogleMap googleMap) {\r\n        mMap = googleMap;\r\n\r\n        // Add a marker in Sydney and move the camera\r\n        LatLng quadcities = new LatLng(42, -90);\r\n        mMap.addMarker(new MarkerOptions().position(quadcities).title(\"Marker in Bettendorf\"));\r\n        mMap.moveCamera(CameraUpdateFactory.newLatLng(quadcities));\r\n\r\n        LatLng Tractor1 = new LatLng(41.557579, -90.495911);\r\n        //mMap.addMarker(new MarkerOptions().position(Tractor1).title(\"Tractor #1\")\r\n                // below line is use to add custom marker on our map.\r\n        //        .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24)));\r\n        mMap.moveCamera(CameraUpdateFactory.newLatLng(Tractor1));\r\n\r\n\r\n        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {\r\n            // TODO: Consider calling\r\n            //    ActivityCompat#requestPermissions\r\n            // here to request the missing permissions, and then overriding\r\n            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,\r\n            //                                          int[] grantResults)\r\n            // to handle the case where the user grants the permission. See the documentation\r\n            // for ActivityCompat#requestPermissions for more details.\r\n            //return;\r\n        }\r\n        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {\r\n            // TODO: Consider calling\r\n            //    ActivityCompat#requestPermissions\r\n            // here to request the missing permissions, and then overriding\r\n            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,\r\n            //                                          int[] grantResults)\r\n            // to handle the case where the user grants the permission. See the documentation\r\n            // for ActivityCompat#requestPermissions for more details.\r\n            return;\r\n        }\r\n        CancellationToken ct = new CancellationToken() {\r\n            @NonNull\r\n            @Override\r\n            public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {\r\n                return null;\r\n            }\r\n\r\n            @Override\r\n            public boolean isCancellationRequested() {\r\n                return false;\r\n            }\r\n        };\r\n        googleMap.setMyLocationEnabled(true);\r\n        //Location location = googleMap.getMyLocation();\r\n        fusedLocationClient.getCurrentLocation(100, ct)\r\n                .addOnSuccessListener(this, new OnSuccessListener<Location>() {\r\n                    @Override\r\n                    public void onSuccess(Location location) {\r\n                        // Got last known location. In some rare situations this can be null.\r\n                        if (location != null) {\r\n                            // Logic to handle location object\r\n                            mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(\"You\")\r\n                                    // below line is use to add custom marker on our map.\r\n                                    .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24)));\r\n                            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));\r\n\r\n                        } else {\r\n                            mMap.addMarker(new MarkerOptions().position(new LatLng(41.542670, -90.477620)).title(\"You\")\r\n                                    // below line is use to add custom marker on our map.\r\n                                    .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24)));\r\n                            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(41.542670, -90.477620)));\r\n\r\n                        }\r\n                    }\r\n                });\r\n    }\r\n\r\n    private void Update()\r\n    {\r\n        CancellationToken ct = new CancellationToken() {\r\n            @NonNull\r\n            @Override\r\n            public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {\r\n                return null;\r\n            }\r\n\r\n            @Override\r\n            public boolean isCancellationRequested() {\r\n                return false;\r\n            }\r\n        };\r\n\r\n        //while (true)\r\n        {\r\n            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {\r\n                // TODO: Consider calling\r\n                //    ActivityCompat#requestPermissions\r\n                // here to request the missing permissions, and then overriding\r\n                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,\r\n                //                                          int[] grantResults)\r\n                // to handle the case where the user grants the permission. See the documentation\r\n                // for ActivityCompat#requestPermissions for more details.\r\n                return;\r\n            }\r\n\r\n            fusedLocationClient.getCurrentLocation(100, ct)\r\n                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {\r\n                        @Override\r\n                        public void onSuccess(Location location) {\r\n                            // Got last known location. In some rare situations this can be null.\r\n                            if (location != null) {\r\n                                // Logic to handle location object\r\n                                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(\"You\")\r\n                                        // below line is use to add custom marker on our map.\r\n                                        .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24)));\r\n                                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));\r\n\r\n                            } else {\r\n                                mMap.addMarker(new MarkerOptions().position(new LatLng(41.542670, -90.477620)).title(\"You\")\r\n                                        // below line is use to add custom marker on our map.\r\n                                        .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24)));\r\n                                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(41.542670, -90.477620)));\r\n\r\n                            }\r\n                        }\r\n                    });\r\n            // Add a marker in Sydney and move the camera\r\n            try {\r\n                sleep(1000);\r\n            } catch (InterruptedException e) {\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n    private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {\r\n        // below line is use to generate a drawable.\r\n        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);\r\n\r\n        // below line is use to set bounds to our vector drawable.\r\n        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());\r\n\r\n        // below line is use to create a bitmap for our\r\n        // drawable which we have added.\r\n        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);\r\n\r\n        // below line is use to add bitmap in our canvas.\r\n        Canvas canvas = new Canvas(bitmap);\r\n\r\n        // below line is use to draw our\r\n        // vector drawable in canvas.\r\n        vectorDrawable.draw(canvas);\r\n\r\n        // after generating our bitmap we are returning our bitmap.\r\n        return BitmapDescriptorFactory.fromBitmap(bitmap);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/teamdrcd_grainlogistics_2022/MapsActivity.java b/app/src/main/java/com/example/teamdrcd_grainlogistics_2022/MapsActivity.java
+--- a/app/src/main/java/com/example/teamdrcd_grainlogistics_2022/MapsActivity.java	
++++ b/app/src/main/java/com/example/teamdrcd_grainlogistics_2022/MapsActivity.java	
+@@ -34,7 +34,7 @@
+ import com.google.android.gms.tasks.OnSuccessListener;
+ import com.google.android.gms.tasks.OnTokenCanceledListener;
+ 
+-@SuppressWarnings("deprecation")
++
+ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+ 
+     private FusedLocationProviderClient fusedLocationClient;
+@@ -117,7 +117,7 @@
+                 return false;
+             }
+         };
+-        googleMap.setMyLocationEnabled(true);
++        //googleMap.setMyLocationEnabled(true);
+         //Location location = googleMap.getMyLocation();
+         fusedLocationClient.getCurrentLocation(100, ct)
+                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
