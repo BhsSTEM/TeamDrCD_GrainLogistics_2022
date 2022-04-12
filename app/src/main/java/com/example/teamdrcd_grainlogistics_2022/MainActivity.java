@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
+
+
+
     }
 
     public void NewUser(View view) {
@@ -73,16 +77,16 @@ public class MainActivity extends AppCompatActivity {
                             //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
                                     //Toast.LENGTH_SHORT).show();
                             //updateUI(null);
-                            String exception = task.getException().toString();
-                            for(int i = 0; i < exception.length(); i++)
+                            String error = task.getException().toString();
+                            String userError = "";
+                            for (int i = 0; i < error.length(); i++)
                             {
-                                if(exception.charAt(i) == ':')
+                                if (error.charAt(i) == ':')
                                 {
-                                    exception = exception.substring(i + 2);
+                                    userError = error.substring(i);
                                 }
                             }
-
-                            String suc = "Login Failed: " + exception;
+                            String suc = "Login Failed: ";
                             final TextView helloTextView = (TextView) findViewById(R.id.textView);
                             helloTextView.setText(suc);
                         }
