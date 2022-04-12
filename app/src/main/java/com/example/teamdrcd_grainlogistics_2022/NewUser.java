@@ -131,7 +131,7 @@ public class NewUser extends AppCompatActivity {
                                 }
                             }
 
-                            String suc = "Account Activation Failed: \n" + exception;
+                            String suc = "Login Failed: \n" + exception;
                             final TextView helloTextView = (TextView) findViewById(R.id.textView10);
                             helloTextView.setText(suc);
 

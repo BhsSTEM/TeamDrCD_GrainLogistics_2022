@@ -9,6 +9,4 @@
     <string name="feedback">Feedback</string>
     <string name="todo">TODO</string>
     <string name="dash">-</string>
-    <string name="action">Action</string>
-    <string name="test_words">This is a test.</string>
 </resources>

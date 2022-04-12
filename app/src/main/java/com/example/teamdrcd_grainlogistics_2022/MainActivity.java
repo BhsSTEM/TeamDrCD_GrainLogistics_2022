@@ -19,17 +19,19 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth mAuth;
     private EditText mMessageEditText;
     private EditText pMessageEditText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
+
+
+
     }
 
     public void NewUser(View view) {
@@ -39,15 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            //updateUI(user);
-        }
+         //Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
+
     }
 
 
     private void updateUI(FirebaseUser currentUser) {
-        if (currentUser != null)
         startActivity(new Intent(MainActivity.this, MapsActivity.class));
     }
 
@@ -73,16 +74,7 @@ public class MainActivity extends AppCompatActivity {
                             //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
                                     //Toast.LENGTH_SHORT).show();
                             //updateUI(null);
-                            String exception = task.getException().toString();
-                            for(int i = 0; i < exception.length(); i++)
-                            {
-                                if(exception.charAt(i) == ':')
-                                {
-                                    exception = exception.substring(i + 2);
-                                }
-                            }
-
-                            String suc = "Login Failed: " + exception;
+                            String suc = "Login Failed. Your email or password was incorrect.";
                             final TextView helloTextView = (TextView) findViewById(R.id.textView);
                             helloTextView.setText(suc);
                         }

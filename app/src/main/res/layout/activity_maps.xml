@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MapsActivity"
-    app:umanoDragView="@id/dragview"
-    app:umanoScrollableView="@id/listView"
-    android:layout_gravity="bottom"
-    android:gravity="bottom">
-
-    <RelativeLayout
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
@@ -23,51 +9,29 @@
 
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sliding_layout"
-                                                     
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="68dp"
+        sothree:umanoShadowHeight="4dp">
 
-        <fragment
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".MapsActivity" />
 
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/dragview"
-        android:clickable="true"
-        android:focusable="false"
-        android:orientation="vertical">
-
-        <RelativeLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="68dp">
+            android:layout_height="match_parent"
+            android:gravity="center|top"
+            android:text="@string/dash"
+            android:textSize="48sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:textSize="16sp"
-                android:text="@string/action"
-                android:paddingStart="15dp"
-                android:layout_centerVertical="true"/>
-
-        </RelativeLayout>
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingTop="16dp"
-            android:id="@+id/listView">
-
-        </ListView>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
     <Button
         android:id="@+id/Overview"
@@ -91,10 +55,5 @@
         android:translationX="275dp" />
 
 
-    </LinearLayout>
-
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
 
 </RelativeLayout>
-
