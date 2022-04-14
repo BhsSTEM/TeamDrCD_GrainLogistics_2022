@@ -1,12 +1,13 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.teamdrcd_grainlogistics_2022.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private ActivityMapsBinding binding;
+    //private ActivityMapsBinding binding;
     //private int[] colors = new int[0xff388E3C];
     private ArrayList<Polygon> polyList= new ArrayList<Polygon>();
     String[] locs = new String[4];
@@ -31,8 +32,8 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        //binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_farm_set_up);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -113,7 +114,7 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
         polygon1.setStrokeColor(0xff388E3C);
     }
     //adds the polygon to a permanently stored list
-    public void addPoly(){
+    public void addPoly(View view){
         Polygon storePoly = polygon1;
         polyList.add(storePoly);
         polygon1.remove();
@@ -123,7 +124,7 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
         locs[3] = null;
     }
     //gets rid of the current polygon
-    public void resetPoly(){
+    public void resetPoly(View view){
         polygon1.remove();
         locs[0] = null;
         locs[1] = null;
