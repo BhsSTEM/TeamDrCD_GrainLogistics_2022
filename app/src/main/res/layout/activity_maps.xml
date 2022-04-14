@@ -1,59 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<!-- From here to the last sothree class is the slide up function and it's needed layouts -->
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".MapsActivity"
+    app:umanoDragView="@id/dragview"
+    app:umanoScrollableView="@id/listView"
+    android:layout_gravity="bottom"
+    android:gravity="bottom">
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        android:id="@+id/sliding_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        sothree:umanoPanelHeight="68dp"
-        sothree:umanoShadowHeight="4dp">
+        android:layout_height="match_parent" >
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        <fragment
             xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".MapsActivity" />
 
-        <TextView
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dragview"
+        android:clickable="true"
+        android:focusable="false"
+        android:orientation="vertical">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:text="@string/dash"
-            android:textSize="48sp" />
+            android:layout_height="68dp">
 
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:textSize="16sp"
+                android:text="@string/action"
+                android:paddingStart="15dp"
+                android:layout_centerVertical="true"/>
 
-    <Button
-        android:id="@+id/Overview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Overview"
-        android:translationX="155dp" />
+        </RelativeLayout>
 
-    <Button
-        android:id="@+id/Menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Menu"
-        android:translationX="60dp" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="16dp"
+            android:id="@+id/listView">
 
-    <Button
-        android:id="@+id/Contact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contact"
-        android:translationX="275dp" />
+        </ListView>
 
+    </LinearLayout>
 
-
-</RelativeLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
