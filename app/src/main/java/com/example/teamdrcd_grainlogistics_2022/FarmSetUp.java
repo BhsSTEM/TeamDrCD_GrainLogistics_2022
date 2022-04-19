@@ -1,5 +1,6 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
+import android.graphics.Point;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,17 +17,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 
 public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    //private ActivityMapsBinding binding;
-    //private int[] colors = new int[0xff388E3C];
-    private ArrayList<Polygon> polyList= new ArrayList<Polygon>();
+    ArrayList<GeoPoint[]> storePoint = new ArrayList<GeoPoint[]>();
     String[] locs = new String[4];
     Polygon polygon1;
+    GeoPoint geo1;
+    GeoPoint geo2;
+    GeoPoint geo3;
+    GeoPoint geo4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +45,6 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -112,16 +107,24 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
                         new LatLng(lat3, lng3),
                         new LatLng(lat4, lng4)));
         polygon1.setStrokeColor(0xff388E3C);
+        geo1 = new GeoPoint(lat1,lng1);
+        geo2 = new GeoPoint(lat2,lng2);
+        geo3 = new GeoPoint(lat3,lng3);
+        geo4 = new GeoPoint(lat4,lng4);
     }
     //adds the polygon to a permanently stored list
     public void addPoly(View view){
-        Polygon storePoly = polygon1;
-        polyList.add(storePoly);
+        GeoPoint[] temp = {geo1,geo2,geo3,geo4};
+        storePoint.add(temp);
         polygon1.remove();
         locs[0] = null;
         locs[1] = null;
         locs[2] = null;
         locs[3] = null;
+        geo1 = null;
+        geo2 = null;
+        geo3 = null;
+        geo4 = null;
     }
     //gets rid of the current polygon
     public void resetPoly(View view){
@@ -132,3 +135,5 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
         locs[3] = null;
     }
 }
+
+
