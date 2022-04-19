@@ -19,11 +19,13 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText mMessageEditText;
     private EditText pMessageEditText;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +69,31 @@ public class MainActivity extends AppCompatActivity {
                             final TextView helloTextView = (TextView) findViewById(R.id.textView);
                             helloTextView.setText(suc);
                             FirebaseUser user = mAuth.getCurrentUser();
+                            database.getReference("/Farms/one").setValue(new Farm());
                             updateUI(user);
                         }
                         else {
                             // If sign in fails, display a message to the user.
                             //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                    //Toast.LENGTH_SHORT).show();
+                            //Toast.LENGTH_SHORT).show();
                             //updateUI(null);
-                            String suc = "Login Failed. Your email or password was incorrect.";
+                            String error = task.getException().toString();
+                            String userError = "";
+                            for (int i = 0; i < error.length(); i++)
+                            {
+                                if (error.charAt(i) == ':')
+                                {
+                                    userError = error.substring(i + 2);
+                                }
+                            }
+                            if (userError.contains("password") || userError.contains("identifier"))
+                            {
+                                userError = "Your email or password is incorrect.";
+                            }
+                            userError.replace("The user account", "Your account");
+                            userError.replace("The user's", "Your");
+                            userError.replace("The user", "You");
+                            String suc = "Login Failed: " + userError;
                             final TextView helloTextView = (TextView) findViewById(R.id.textView);
                             helloTextView.setText(suc);
                         }
