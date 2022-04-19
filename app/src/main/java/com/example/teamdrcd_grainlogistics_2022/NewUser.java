@@ -75,7 +75,7 @@ public class NewUser extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             //Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+
                             assert user != null;
                             String uid = user.getUid();
 
@@ -113,6 +113,8 @@ public class NewUser extends AppCompatActivity {
 
                             DatabaseReference myRef2 = database.getReference("/users/" + uid + "/Phone Number");
                             myRef2.setValue(pn);
+
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             //Log.w(TAG, "createUserWithEmail:failure", task.getException());
