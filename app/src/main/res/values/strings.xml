@@ -10,4 +10,6 @@
     <string name="todo">TODO</string>
     <string name="dash">-</string>
     <string name="action">SlideUp</string>
+    <string name="reset">Reset</string>
+    <string name="add">Add</string>
 </resources>
