@@ -1,7 +1,6 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
 import android.graphics.Point;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +16,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.firebase.auth.*;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
@@ -24,13 +26,14 @@ import java.util.ArrayList;
 public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    ArrayList<GeoPoint[]> storePoint = new ArrayList<GeoPoint[]>();
-    String[] locs = new String[4];
-    Polygon polygon1;
-    GeoPoint geo1;
-    GeoPoint geo2;
-    GeoPoint geo3;
-    GeoPoint geo4;
+    private String[] locs = new String[4];
+    private Polygon polygon1;
+    private GeoPoint geo1;
+    private GeoPoint geo2;
+    private GeoPoint geo3;
+    private GeoPoint geo4;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +118,11 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
     //adds the polygon to a permanently stored list
     public void addPoly(View view){
         GeoPoint[] temp = {geo1,geo2,geo3,geo4};
-        storePoint.add(temp);
+        FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
+        String uid = user.getUid();
+        DatabaseReference myRef3 = database.getReference("/users/" + uid + "/FarmTest");
+        myRef3.setValue(temp);
         polygon1.remove();
         locs[0] = null;
         locs[1] = null;
@@ -133,6 +140,10 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
         locs[1] = null;
         locs[2] = null;
         locs[3] = null;
+        geo1 = null;
+        geo2 = null;
+        geo3 = null;
+        geo4 = null;
     }
 }
 
