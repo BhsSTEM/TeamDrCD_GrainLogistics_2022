@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
 
+
 public class NewUser extends AppCompatActivity {
     private EditText firstName;
     private EditText emailBox;
@@ -27,6 +28,8 @@ public class NewUser extends AppCompatActivity {
     private EditText passwordBox2;
     private EditText lastName;
     private EditText phoneNum;
+    private EditText farmID;
+
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -113,8 +116,10 @@ public class NewUser extends AppCompatActivity {
                             DatabaseReference myRef2 = database.getReference("/users/" + uid + "/Phone Number");
                             myRef2.setValue(pn);
 
-                            DatabaseReference myRef3 = database.getReference("/users/" + uid + "/numOfFields");
-                            myRef3.setValue(0);
+                            farmID = findViewById(R.id.editTextTextPersonName3);
+                            int fID = Integer.parseInt(farmID.getText().toString());
+                            Farm farm = new Farm(fID);
+                            farm.addUser(uid);
 
                             updateUI(user);
                         } else {
@@ -167,6 +172,6 @@ public class NewUser extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(NewUser.this, FarmSetUp.class));
+        startActivity(new Intent(NewUser.this, MapsActivity.class));
     }
 }
