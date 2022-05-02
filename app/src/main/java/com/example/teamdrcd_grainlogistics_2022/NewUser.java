@@ -20,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
 
-
 public class NewUser extends AppCompatActivity {
     private EditText firstName;
     private EditText emailBox;
@@ -114,6 +113,9 @@ public class NewUser extends AppCompatActivity {
                             DatabaseReference myRef2 = database.getReference("/users/" + uid + "/Phone Number");
                             myRef2.setValue(pn);
 
+                            DatabaseReference myRef3 = database.getReference("/users/" + uid + "/numOfFields");
+                            myRef3.setValue(0);
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -165,6 +167,6 @@ public class NewUser extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(NewUser.this, MapsActivity.class));
+        startActivity(new Intent(NewUser.this, FarmSetUp.class));
     }
 }

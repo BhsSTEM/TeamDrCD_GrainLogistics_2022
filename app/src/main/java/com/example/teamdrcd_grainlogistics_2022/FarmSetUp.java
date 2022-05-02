@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -16,12 +17,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
 
@@ -34,6 +43,9 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
     private GeoPoint geo4;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
+    String uid;
+    int num;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +53,9 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
 
         //binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_farm_set_up);
-
+        user = mAuth.getCurrentUser();
+        assert user != null;
+        uid = user.getUid();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -118,11 +132,14 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
     //adds the polygon to a permanently stored list
     public void addPoly(View view){
         GeoPoint[] temp = {geo1,geo2,geo3,geo4};
-        FirebaseUser user = mAuth.getCurrentUser();
-        assert user != null;
-        String uid = user.getUid();
-        DatabaseReference myRef3 = database.getReference("/users/" + uid + "/FarmTest");
-        myRef3.setValue(temp);
+        String fieldName = "/Field" + String.valueOf(num+1);
+        for(int x = 0;x < temp.length;x++){
+            String tempString = "/FieldSpot" + Integer.toString(x+1);
+            DatabaseReference myRef1 = database.getReference("/users/" + uid + fieldName + tempString);
+            myRef1.setValue(temp[x]);
+        }
+        DatabaseReference myRef2 = database.getReference("/users/" + uid + "/numOfFields");
+        myRef2.setValue(num+1);
         polygon1.remove();
         locs[0] = null;
         locs[1] = null;
@@ -144,6 +161,10 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
         geo2 = null;
         geo3 = null;
         geo4 = null;
+    }
+    public void getNumOfFields()
+    {
+
     }
 }
 
