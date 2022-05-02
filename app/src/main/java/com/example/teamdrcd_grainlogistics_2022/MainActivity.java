@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                             final TextView helloTextView = (TextView) findViewById(R.id.textView);
                             helloTextView.setText(suc);
                             FirebaseUser user = mAuth.getCurrentUser();
-                            database.getReference("/Farms/one").setValue(new Farm());
+                            //database.getReference("/Farms/one").setValue(new Farm());
                             updateUI(user);
                         }
                         else {
