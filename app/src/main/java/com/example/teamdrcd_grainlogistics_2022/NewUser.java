@@ -28,6 +28,8 @@ public class NewUser extends AppCompatActivity {
     private EditText passwordBox2;
     private EditText lastName;
     private EditText phoneNum;
+    private EditText farmID;
+
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -113,6 +115,11 @@ public class NewUser extends AppCompatActivity {
 
                             DatabaseReference myRef2 = database.getReference("/users/" + uid + "/Phone Number");
                             myRef2.setValue(pn);
+
+                            farmID = findViewById(R.id.editTextTextPersonName3);
+                            int fID = Integer.parseInt(farmID.getText().toString());
+                            Farm farm = new Farm(fID);
+                            farm.addUser(uid);
 
                             updateUI(user);
                         } else {
