@@ -121,6 +121,9 @@ public class NewUser extends AppCompatActivity {
                             Farm farm = new Farm(fID);
                             farm.addUser(uid);
 
+                            DatabaseReference myRef3 = database.getReference("/users/" + uid + "/numOfFields");
+                            myRef3.setValue("0");
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -172,6 +175,6 @@ public class NewUser extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(NewUser.this, MapsActivity.class));
+        startActivity(new Intent(NewUser.this, FarmSetUp.class));
     }
 }
