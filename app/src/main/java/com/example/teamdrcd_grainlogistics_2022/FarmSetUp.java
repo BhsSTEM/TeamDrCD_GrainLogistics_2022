@@ -2,11 +2,11 @@ package com.example.teamdrcd_grainlogistics_2022;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.teamdrcd_grainlogistics_2022.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -15,40 +15,60 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 
 public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private ActivityMapsBinding binding;
-    //private int[] colors = new int[0xff388E3C];
-    private ArrayList<Polygon> polyList= new ArrayList<Polygon>();
-    String[] locs = new String[4];
-    Polygon polygon1;
+    private String[] locs = new String[4];
+    private Polygon polygon1;
+    private GeoPoint geo1;
+    private GeoPoint geo2;
+    private GeoPoint geo3;
+    private GeoPoint geo4;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
+    String uid;
+    String num;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
+        //binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_farm_set_up);
+        user = mAuth.getCurrentUser();
+        assert user != null;
+        uid = user.getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference temp = database.getReference("/users/" + uid + "/numOfFields");
+        temp.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String post = dataSnapshot.getValue(String.class);
+                num = post;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -111,23 +131,47 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
                         new LatLng(lat3, lng3),
                         new LatLng(lat4, lng4)));
         polygon1.setStrokeColor(0xff388E3C);
+        geo1 = new GeoPoint(lat1,lng1);
+        geo2 = new GeoPoint(lat2,lng2);
+        geo3 = new GeoPoint(lat3,lng3);
+        geo4 = new GeoPoint(lat4,lng4);
     }
     //adds the polygon to a permanently stored list
-    public void addPoly(){
-        Polygon storePoly = polygon1;
-        polyList.add(storePoly);
+    public void addPoly(View view){
+        GeoPoint[] temp = {geo1,geo2,geo3,geo4};
+        //do stuff here
+        int num1 = Integer.parseInt(num);
+        String fieldName = "/Field" + String.valueOf(num1+1);
+        for(int x = 0;x < temp.length;x++){
+            String tempString = "/FieldSpot" + Integer.toString(x+1);
+            DatabaseReference myRef1 = database.getReference("/users/" + uid + fieldName + tempString);
+            myRef1.setValue(temp[x]);
+        }
+        DatabaseReference myRef2 = database.getReference("/users/" + uid + "/numOfFields");
+        String tempNum = String.valueOf(num1+1);
+        myRef2.setValue(tempNum);
         polygon1.remove();
         locs[0] = null;
         locs[1] = null;
         locs[2] = null;
         locs[3] = null;
+        geo1 = null;
+        geo2 = null;
+        geo3 = null;
+        geo4 = null;
     }
     //gets rid of the current polygon
-    public void resetPoly(){
+    public void resetPoly(View view){
         polygon1.remove();
         locs[0] = null;
         locs[1] = null;
         locs[2] = null;
         locs[3] = null;
+        geo1 = null;
+        geo2 = null;
+        geo3 = null;
+        geo4 = null;
     }
 }
+
+

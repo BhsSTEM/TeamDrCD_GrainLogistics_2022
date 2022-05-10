@@ -28,6 +28,8 @@ public class NewUser extends AppCompatActivity {
     private EditText passwordBox2;
     private EditText lastName;
     private EditText phoneNum;
+    private EditText farmID;
+
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -75,7 +77,7 @@ public class NewUser extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             //Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+
                             assert user != null;
                             String uid = user.getUid();
 
@@ -113,6 +115,16 @@ public class NewUser extends AppCompatActivity {
 
                             DatabaseReference myRef2 = database.getReference("/users/" + uid + "/Phone Number");
                             myRef2.setValue(pn);
+
+                            farmID = findViewById(R.id.editTextTextPersonName3);
+                            int fID = Integer.parseInt(farmID.getText().toString());
+                            Farm farm = new Farm(fID);
+                            farm.addUser(uid);
+
+                            DatabaseReference myRef3 = database.getReference("/users/" + uid + "/numOfFields");
+                            myRef3.setValue("0");
+
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             //Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -163,6 +175,6 @@ public class NewUser extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(NewUser.this, MapsActivity.class));
+        startActivity(new Intent(NewUser.this, FarmSetUp.class));
     }
 }
