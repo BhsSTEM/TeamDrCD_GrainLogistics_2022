@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,12 +13,19 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 
@@ -118,11 +126,20 @@ public class NewUser extends AppCompatActivity {
 
                             farmID = findViewById(R.id.editTextTextPersonName3);
                             int fID = Integer.parseInt(farmID.getText().toString());
-                            Farm farm = new Farm(fID);
-                            farm.addUser(uid);
+                            DatabaseReference myRef3 = database.getReference("/users/" + uid + "/Farm ID");
+                            myRef2.setValue(fID);
 
-                            DatabaseReference myRef3 = database.getReference("/users/" + uid + "/numOfFields");
-                            myRef3.setValue("0");
+                            DatabaseReference temp = database.getReference("/Farms/" + fID + "/people");
+                            temp.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    ArrayList<String> people = (ArrayList<String>) dataSnapshot.getValue(ArrayList.class);
+                                    people.add(mAuth.getUid());
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
 
                             updateUI(user);
                         } else {
