@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     tools:context=".MapsActivity"
     app:umanoDragView="@id/dragview"
-    app:umanoScrollableView="@id/listView"
+    app:umanoScrollableView="@+id/picture"
     android:layout_gravity="bottom"
     android:gravity="bottom">
 
@@ -17,8 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <fragment
-            xmlns:map="http://schemas.android.com/apk/res-auto"
+        <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
@@ -50,14 +49,23 @@
 
         </RelativeLayout>
 
-        <ListView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:paddingTop="16dp"
-            android:id="@+id/listView">
+            android:paddingLeft="15dp"
+            android:textSize="16sp"
+            android:text="This is a test line. This is another line. Wow, another line."
+            android:id="@+id/testText" />
 
-        </ListView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:id="@+id/picture"
+            android:layout_margin="16dp"
+            android:src="@drawable/track_and_field_logo_w_stalk"
+            android:contentDescription="@string/testimage" />
 
     </LinearLayout>
 

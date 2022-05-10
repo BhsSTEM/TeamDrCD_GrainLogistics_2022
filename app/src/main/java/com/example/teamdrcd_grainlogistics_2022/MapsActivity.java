@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,13 +19,20 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.teamdrcd_grainlogistics_2022.databinding.ActivityMapsBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +46,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // Adds the "buttons" in the slide up functions
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                new String[] {"Test Button", "Second Button"}));
     }
 
     /**
@@ -57,6 +61,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        googleMap.setOnMarkerClickListener(this);
+
         // Add a marker in Sydney and move the camera
         LatLng quadcities = new LatLng(42, -90);
         mMap.addMarker(new MarkerOptions().position(quadcities).title("Marker in Bettendorf"));
@@ -64,10 +70,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng Tractor1 = new LatLng(41.557579, -90.495911);
-        mMap.addMarker(new MarkerOptions().position(Tractor1).title("Tractor #1")
+        MarkerOptions markerOptions = new MarkerOptions().position(Tractor1).title("Tractor #1")
                 // below line is use to add custom marker on our map.
-                .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24)));
+                .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24));
+        //Marker marker = new Marker(markerOptions);
+        mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Tractor1));
+
+
+        //Database below VV
+        //tractorname
+        DatabaseReference myRef = database.getReference("/Tractors" + "/Tractor1" + "/Tractor Name");
+        myRef.setValue("Tractor1");
+
+        //Fuel level
+        DatabaseReference myRef1 = database.getReference("/Tractors" + "/Tractor1" + "/Tractor Fuel Level");
+        myRef1.setValue("78%");
+
+        //Grain capacity
+        DatabaseReference myRef2 = database.getReference("/Tractors" + "/Tractor1" + "/Tractor Grain Capacity");
+        myRef2.setValue("26% Full");
+
+        //Grain moisture level
+        DatabaseReference myRef3 = database.getReference("/Tractors" + "/Tractor1" + "/ Grain Moisture Level");
+        myRef3.setValue("12% Moisture");
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
@@ -90,5 +116,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_SHORT).show();
+        return false;
+
+        /*DatabaseReference temp = database.getReference("/Tractors" + "/Tractor1");
+        temp.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String post = dataSnapshot.getValue(String.class);
+                num = post;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+        return false;*/
     }
 }
