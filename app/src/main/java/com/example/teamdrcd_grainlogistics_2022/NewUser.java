@@ -127,14 +127,24 @@ public class NewUser extends AppCompatActivity {
                             farmID = findViewById(R.id.editTextTextPersonName3);
                             int fID = Integer.parseInt(farmID.getText().toString());
                             DatabaseReference myRef3 = database.getReference("/users/" + uid + "/Farm ID");
-                            myRef2.setValue(fID);
+                            myRef3.setValue(fID);
 
                             DatabaseReference temp = database.getReference("/Farms/" + fID + "/people");
                             temp.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    ArrayList<String> people = (ArrayList<String>) dataSnapshot.getValue(ArrayList.class);
-                                    people.add(mAuth.getUid());
+                                    ArrayList<String> people = (ArrayList<String>) dataSnapshot.getValue();
+                                    if (people == null)
+                                    {
+                                        people = new ArrayList<String>();
+                                        people.add(mAuth.getUid());
+                                    }
+                                    else if (people.get(people.size() - 1) == mAuth.getUid()){}
+                                    else {
+                                        people.add(mAuth.getUid());
+                                    }
+                                    DatabaseReference temp = database.getReference("/Farms/" + fID + "/people");
+                                    temp.setValue(people);
                                 }
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
@@ -192,6 +202,6 @@ public class NewUser extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(NewUser.this, FarmSetUp.class));
+        startActivity(new Intent(NewUser.this, MapsActivity.class));
     }
 }
