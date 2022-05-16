@@ -26,7 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
@@ -61,8 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        googleMap.setOnMarkerClickListener(this);
-
         // Add a marker in Sydney and move the camera
         LatLng quadcities = new LatLng(42, -90);
         mMap.addMarker(new MarkerOptions().position(quadcities).title("Marker in Bettendorf"));
@@ -76,24 +74,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Marker marker = new Marker(markerOptions);
         mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Tractor1));
-
-
-        //Database below VV
-        //tractorname
-        DatabaseReference myRef = database.getReference("/Tractors" + "/Tractor1" + "/Tractor Name");
-        myRef.setValue("Tractor1");
-
-        //Fuel level
-        DatabaseReference myRef1 = database.getReference("/Tractors" + "/Tractor1" + "/Tractor Fuel Level");
-        myRef1.setValue("78%");
-
-        //Grain capacity
-        DatabaseReference myRef2 = database.getReference("/Tractors" + "/Tractor1" + "/Tractor Grain Capacity");
-        myRef2.setValue("26% Full");
-
-        //Grain moisture level
-        DatabaseReference myRef3 = database.getReference("/Tractors" + "/Tractor1" + "/ Grain Moisture Level");
-        myRef3.setValue("12% Moisture");
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
@@ -116,24 +96,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_SHORT).show();
-        return false;
-
-        /*DatabaseReference temp = database.getReference("/Tractors" + "/Tractor1");
-        temp.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String post = dataSnapshot.getValue(String.class);
-                num = post;
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-        return false;*/
     }
 }
