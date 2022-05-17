@@ -1,14 +1,15 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -62,6 +63,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        // Add a marker in Sydney and move the camera
+        LatLng quadcities = new LatLng(42, -90);
+        mMap.addMarker(new MarkerOptions().position(quadcities).title("Marker in Bettendorf"));
+        float zoomLevel = (float) 16.0;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(quadcities, zoomLevel));
         // Add a marker in Sydney and move the camera
         LatLng Tractor1 = new LatLng(41.557579, -90.495911);
         MarkerOptions markerOptions = new MarkerOptions().position(Tractor1).title("Tractor #1")
@@ -70,6 +77,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Marker marker = new Marker(markerOptions);
         mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Tractor1));
+    }
+    public void switchActivities(View view) {
+        Intent switchActivityIntent = new Intent(this, FarmSetUp.class);
+        startActivity(switchActivityIntent);
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
