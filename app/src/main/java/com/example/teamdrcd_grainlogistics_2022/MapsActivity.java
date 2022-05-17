@@ -1,5 +1,6 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -60,11 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng quadcities = new LatLng(42, -90);
-        mMap.addMarker(new MarkerOptions().position(quadcities).title("Marker in Bettendorf"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(quadcities));
 
         // Add a marker in Sydney and move the camera
         LatLng Tractor1 = new LatLng(41.557579, -90.495911);
