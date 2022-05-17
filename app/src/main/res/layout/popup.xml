@@ -4,14 +4,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#000"
+    android:background="#7E7E7E"
     android:padding="10px">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="This is a popup window.."
-        android:textColor="#fff"/>
+        android:textColor="#FFFFFF"/>
 
     <Button
         android:layout_width="wrap_content"
