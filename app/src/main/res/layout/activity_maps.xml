@@ -43,12 +43,12 @@
          android:onClick="switchActivities"/>
 
      <ImageButton
-         android:id="@+id/showPopupBtn"
+         android:id="@+id/infobutton"
          android:layout_width="38dp"
          android:layout_height="wrap_content"
          android:src="@drawable/ic_info_icon"
          app:layout_constraintBottom_toBottomOf="@+id/map"
-         app:layout_constraintEnd_toEndOf="parent">
+         app:layout_constraintStart_toStartOf="@+id/map">
      </ImageButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
