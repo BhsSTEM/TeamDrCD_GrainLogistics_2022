@@ -128,6 +128,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            DatabaseReference myRef3 = database.getReference("/users/" + mAuth.getUid() + "/Location");
+                            myRef3.setValue(location);
+                        }
+                    }
+                });
+
         DatabaseReference temp = database.getReference("/users/" + mAuth.getUid() + "/Farm ID");
         temp.addValueEventListener(new ValueEventListener() {
             @Override
@@ -144,8 +156,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             temp.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Location loc = (Location) dataSnapshot.getValue(Location.class);
-                                    if(loc!=null) {
+                                    if(dataSnapshot.getValue() !=null) {
+                                        Location loc = (Location)dataSnapshot.getValue();
                                         LatLng quadcities = new LatLng(loc.getLatitude(), loc.getLongitude());
                                         mMap.addMarker(new MarkerOptions().position(quadcities).title(""));
                                         mMap.moveCamera(CameraUpdateFactory.newLatLng(quadcities));

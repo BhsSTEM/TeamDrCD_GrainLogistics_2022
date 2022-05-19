@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void forgot(View view) {
+        Intent intent = new Intent(this, forgot_password.class);
+        startActivity(intent);
+    }
+
     public void onStart() {
         super.onStart();
          //Check if user is signed in (non-null) and update UI accordingly.
@@ -102,9 +107,5 @@ public class MainActivity extends AppCompatActivity {
                 );
     }
 
-    public void forgot(View view) {
-        Intent intent = new Intent(this, forgot_password.class);
-        startActivity(intent);
-    }
 
 }

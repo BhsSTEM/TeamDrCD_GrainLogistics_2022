@@ -20,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 public class forgot_password extends AppCompatActivity {
     public String email;
     private EditText emailBox;
-    User n = new User();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +31,6 @@ public class forgot_password extends AppCompatActivity {
     public void send(View view) {
         emailBox= findViewById(R.id.editTextTextEmailAddress);
         String emailAddress = emailBox.getText().toString();
-        n.setEmail(emailAddress);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         //String emailAddress = "user@example.com";
@@ -51,19 +49,18 @@ public class forgot_password extends AppCompatActivity {
     public void recover(View view) {
         emailBox= findViewById(R.id.editTextTextEmailAddress);
         email = emailBox.getText().toString();
-        n.setEmail(email);
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
                         // URL you want to redirect back to. The domain (www.example.com) for this
                         // URL must be whitelisted in the Firebase Console.
-                        .setUrl("https://drcd-bdb19.firebaseapp.com")
+                        .setUrl("https://drcd.page.link/bjYi")
                         // This must be true
                         .setHandleCodeInApp(true)
                         .setIOSBundleId("com.example.ios")
                         .setAndroidPackageName(
                                 "com.example.teamdrcd_grainlogistics_2022",
-                                true, /* installIfNotAvailable */
+                                false, /* installIfNotAvailable */
                                 "12"    /* minimumVersion */)
                         .build();
 
