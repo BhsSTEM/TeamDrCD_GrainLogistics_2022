@@ -1,18 +1,19 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -50,6 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private int numOfTractors = 1;
+    private boolean placeTractor = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +80,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        googleMap.setOnMarkerClickListener(this);
-
+        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         // Add a marker in Sydney and move the camera
         LatLng quadcities = new LatLng(42, -90);
         mMap.addMarker(new MarkerOptions().position(quadcities).title("Marker in Bettendorf"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(quadcities));
-
+        float zoomLevel = (float) 16.0;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(quadcities, zoomLevel));
         // Add a marker in Sydney and move the camera
         LatLng Tractor1 = new LatLng(41.557579, -90.495911);
         MarkerOptions markerOptions = new MarkerOptions().position(Tractor1).title("Tractor #1")
@@ -195,6 +196,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Grain moisture level
         DatabaseReference myRef3 = database.getReference("/Tractors" + "/Tractor1" + "/ Grain Moisture Level");
         myRef3.setValue("12% Moisture");
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                if(placeTractor){
+                    addTractor(latLng);
+                }
+            }
+        });
+    }
+    public void switchActivities(View view) {
+        Intent switchActivityIntent = new Intent(this, FarmSetUp.class);
+        startActivity(switchActivityIntent);
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
@@ -218,23 +231,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_SHORT).show();
-        return false;
-
-        /*DatabaseReference temp = database.getReference("/Tractors" + "/Tractor1");
-        temp.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String post = dataSnapshot.getValue(String.class);
-                num = post;
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-        return false;*/
+    public void addTractor(LatLng latlng){
+        String temp = "Tractor #" +  String.valueOf(numOfTractors + 1);
+        MarkerOptions markerOptions = new MarkerOptions().position(latlng).title(temp)
+                .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24));
+        mMap.addMarker(markerOptions);
+        numOfTractors += 1;
+        placeTractor = false;
     }
+    public void goTrue(View view) { placeTractor = true;}
 }
