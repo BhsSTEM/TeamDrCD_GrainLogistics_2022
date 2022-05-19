@@ -1,6 +1,8 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -240,4 +242,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         placeTractor = false;
     }
     public void goTrue(View view) { placeTractor = true;}
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        return false;
+    }
 }
