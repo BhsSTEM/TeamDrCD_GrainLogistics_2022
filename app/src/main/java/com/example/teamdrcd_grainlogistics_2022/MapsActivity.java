@@ -1,5 +1,6 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -35,6 +36,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private int numOfTractors = 1;
+    private boolean placeTractor = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Marker marker = new Marker(markerOptions);
         mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Tractor1));
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                if(placeTractor){
+                    addTractor(latLng);
+                }
+            }
+        });
     }
     public void switchActivities(View view) {
         Intent switchActivityIntent = new Intent(this, FarmSetUp.class);
@@ -104,4 +115,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+    public void addTractor(LatLng latlng){
+        String temp = "Tractor #" +  String.valueOf(numOfTractors + 1);
+        MarkerOptions markerOptions = new MarkerOptions().position(latlng).title(temp)
+                .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24));
+        mMap.addMarker(markerOptions);
+        numOfTractors += 1;
+        placeTractor = false;
+    }
+    public void goTrue(View view) { placeTractor = true;}
 }

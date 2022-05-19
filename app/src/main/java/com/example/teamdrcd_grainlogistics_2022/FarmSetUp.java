@@ -1,5 +1,6 @@
 package com.example.teamdrcd_grainlogistics_2022;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -72,12 +73,11 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         // Add a marker in Bettendorf and move the camera
         LatLng quadcities = new LatLng(42, -90);
-        mMap.addMarker(new MarkerOptions().position(quadcities).title("Marker in Bettendorf"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(quadcities));
-
+        float zoomLevel = (float) 16.0;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(quadcities, zoomLevel));
         //on touch stores coordinates to send to make a polygon
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -150,6 +150,11 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
         DatabaseReference myRef2 = database.getReference("/users/" + uid + "/numOfFields");
         String tempNum = String.valueOf(num1+1);
         myRef2.setValue(tempNum);
+        mMap.addPolygon(new PolygonOptions().clickable(true).add(
+                new LatLng(geo1.getLatitude(), geo1.getLongitude()),
+                new LatLng(geo2.getLatitude(), geo2.getLongitude()),
+                new LatLng(geo3.getLatitude(), geo3.getLongitude()),
+                new LatLng(geo4.getLatitude(), geo4.getLongitude())));
         polygon1.remove();
         locs[0] = null;
         locs[1] = null;
@@ -171,6 +176,10 @@ public class FarmSetUp extends FragmentActivity implements OnMapReadyCallback {
         geo2 = null;
         geo3 = null;
         geo4 = null;
+    }
+    public void goBack(View view) {
+        Intent switchActivityIntent = new Intent(this, MapsActivity.class);
+        startActivity(switchActivityIntent);
     }
 }
 
