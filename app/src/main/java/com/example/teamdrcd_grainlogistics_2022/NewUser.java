@@ -175,6 +175,6 @@ public class NewUser extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(NewUser.this, FarmSetUp.class));
+        startActivity(new Intent(NewUser.this, MapsActivity.class));
     }
 }

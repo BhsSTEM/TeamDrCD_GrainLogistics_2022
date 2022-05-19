@@ -17,7 +17,7 @@
          android:id="@+id/button8"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Overview"
+         android:text="@string/overview"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="@+id/map"
          app:layout_constraintTop_toTopOf="parent" />
@@ -26,16 +26,27 @@
          android:id="@+id/button9"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Contact"
+         android:text="@string/contact"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toEndOf="@+id/button8"
          app:layout_constraintTop_toTopOf="parent" />
 
      <Button
+         android:id="@+id/addTractor"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginEnd="16dp"
+         android:layout_marginBottom="24dp"
+         android:text="@string/add_tractor"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         android:onClick="goTrue"/>
+
+     <Button
          android:id="@+id/button10"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Fields"
+         android:text="@string/fields"
          app:layout_constraintEnd_toStartOf="@+id/button8"
          app:layout_constraintStart_toStartOf="parent"
 
