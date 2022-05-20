@@ -31,9 +31,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        /*setContentView(R.layout.activity_maps);
+        ImageButton myButton = (ImageButton) findViewById(R.id.infobutton);
 
-
-
+        myButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                MainActivity.this.startActivity(new Intent(MainActivity.this, InfoForMaps.class));
+            }
+        }); */
     }
 
     public void NewUser(View view) {
