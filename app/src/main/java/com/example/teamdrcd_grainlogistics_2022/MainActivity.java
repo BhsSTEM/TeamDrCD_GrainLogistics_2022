@@ -19,7 +19,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,17 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //setContentView(R.layout.activity_maps);
         mAuth = FirebaseAuth.getInstance();
 
-        /*ImageButton myButton = (ImageButton) findViewById(R.id.infobutton);
-
-        myButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                MainActivity.this.startActivity(new Intent(MainActivity.this, InfoForMaps.class));
-            }
-        }); */
     }
 
     public void NewUser(View view) {
