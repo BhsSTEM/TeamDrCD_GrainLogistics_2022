@@ -127,6 +127,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (location != null) {
                             DatabaseReference myRef3 = database.getReference("/users/" + mAuth.getUid() + "/Location");
                             myRef3.setValue(location);
+                            LatLng Tractor1 = new LatLng(location.getLatitude(), location.getLongitude());
+                            MarkerOptions markerOptions = new MarkerOptions().position(Tractor1).title("You")
+                                    // below line is use to add custom marker on our map.
+                                    .icon(BitmapFromVector(getApplicationContext(), R.drawable.ic_baseline_agriculture_24));
+                            //Marker marker = new Marker(markerOptions);
+                            mMap.addMarker(markerOptions);
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(Tractor1));
                         }
                     }
                 });
@@ -139,6 +146,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (location != null) {
                             DatabaseReference myRef3 = database.getReference("/users/" + mAuth.getUid() + "/Location");
                             myRef3.setValue(location);
+
                         }
                     }
                 });
