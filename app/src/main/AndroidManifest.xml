@@ -14,9 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeamDrCD_GrainLogistics_2022">
         <activity
-            android:name=".InfoForMaps"
-            android:exported="false" />
-        <activity
             android:name=".statsactivity"
             android:exported="false"
             android:label="@string/title_activity_statsactivity"
@@ -48,7 +45,7 @@
         </activity>
         <activity
             android:name=".NewUser"
-            android:exported="true" />
+            android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -58,7 +55,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-            android:exported="true" />
         <activity
             android:name=".FarmSetUp"
             android:exported="true">
